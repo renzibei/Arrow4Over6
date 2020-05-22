@@ -203,7 +203,7 @@ void ArBackFramework::timerProcess() {
 
         if(nowTime - lastKeepAliveTime >= 60) {
             LOGW("Time out 60s");
-            this->stopFlag = true;
+            this->stopRun();
         }
         if(nowTime - lastSendTime >= 20) {
             Msg tempMsg;
@@ -247,6 +247,8 @@ void ArBackFramework::vpnProcess() {
 
 
 void ArBackFramework::stopRun() {
+    LOGI("Stop Run backend 3 thread");
+    this->stopFlag = true;
     PipeBackend::getInstance()->writeInt(203);
     SocketPlugin::getInstance()->closeSocket();
     if(close(vpnFd) < 0) {
@@ -262,6 +264,7 @@ void ArBackFramework::stopRun() {
  * writeCode = 201: send ip info, write [ipv4Addr, router, dns1, dns2, dns3] sockfd
  * writeCode = 202: send statical data, write connect time (int), upload speed (int)/Byte/s, download speed (int) Byte/s, uploadPackets (int), downloadPackets (int), upload bandwidth (int), download bandwidth (int)
  * writeCode = 203: send stop Flag, write null
+ *
  * @param appDirPath
  */
 
@@ -283,7 +286,6 @@ void ArBackFramework::run(const char* appDirPath) {
             vpnProcess();
         }
         else if(readCode == 103) {
-            this->stopFlag = true;
             stopRun();
         }
         else {

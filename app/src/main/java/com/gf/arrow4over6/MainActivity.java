@@ -47,18 +47,21 @@ public class MainActivity extends AppCompatActivity {
 
     public static void updateStatistics(final int connectTime, final int uploadSpeed, final int downloadSpeed,
                                             final int uploadPackets, final int downloadPackets, final int uploadFlow, final int downloadFlow) {
+        final String connectTimeStr = connectTime + " s";
+        final String uploadSpeedStr = uploadSpeed + " Byte/s", downloadSpeedStr = downloadSpeed + " Byte/s";
+        final String uploadFlowStr = uploadFlow + " Bytes", downloadFlowStr = downloadFlow + " Bytes";
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
                 MainActivity mainActivity = getInstance();
-                ((TextView) mainActivity.findViewById(R.id.connectTimeView)).setText(Integer.toString(connectTime));
-                ((TextView) mainActivity.findViewById(R.id.uploadSpeedView)).setText(Integer.toString(uploadSpeed));
-                ((TextView) mainActivity.findViewById(R.id.downloadSpeedView)).setText(Integer.toString(downloadSpeed));
+                ((TextView) mainActivity.findViewById(R.id.connectTimeView)).setText(connectTimeStr);
+                ((TextView) mainActivity.findViewById(R.id.uploadSpeedView)).setText(uploadSpeedStr);
+                ((TextView) mainActivity.findViewById(R.id.downloadSpeedView)).setText(downloadSpeedStr);
                 ((TextView) mainActivity.findViewById(R.id.uploadPacketsView)).setText(Integer.toString(uploadPackets));
                 ((TextView) mainActivity.findViewById(R.id.downloadPacketsView)).setText(Integer.toString(downloadSpeed));
-                ((TextView) mainActivity.findViewById(R.id.uploadFlowView)).setText(Integer.toString(uploadFlow));
-                ((TextView) mainActivity.findViewById(R.id.downloadFlowView)).setText(Integer.toString(downloadFlow));
+                ((TextView) mainActivity.findViewById(R.id.uploadFlowView)).setText(uploadFlowStr);
+                ((TextView) mainActivity.findViewById(R.id.downloadFlowView)).setText(downloadFlowStr);
             }
         });
     }
@@ -178,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         _instance = this;
         // Example of a call to a native method
-//        TextView tv = findViewById(R.id.sample_text);
-//        tv.setText("hahaha");
         int backendRet = startBackend(getFilesDir().getAbsolutePath());
         PipeFrontEnd.setPipeDirPathAndBuild(getFilesDir().getAbsolutePath());
         ArLog.i("After set pipe dir");
