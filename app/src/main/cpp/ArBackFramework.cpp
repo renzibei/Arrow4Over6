@@ -40,7 +40,9 @@ void ArBackFramework::connectSocket() {
     }
     if(SocketPlugin::getInstance()->connectSocket(ipv6AddressBuf, port) < 0) {
         LOGE("Fail to connect socket");
-        std::exit(EXIT_FAILURE);
+//        std::exit(EXIT_FAILURE);
+        PipeBackend::getInstance()->writeInt(204);
+        return;
     }
     Msg tempMsg;
     tempMsg.type = 100;
@@ -264,6 +266,7 @@ void ArBackFramework::stopRun() {
  * writeCode = 201: send ip info, write [ipv4Addr, router, dns1, dns2, dns3] sockfd
  * writeCode = 202: send statical data, write connect time (int), upload speed (int)/Byte/s, download speed (int) Byte/s, uploadPackets (int), downloadPackets (int), upload bandwidth (int), download bandwidth (int)
  * writeCode = 203: send stop Flag, write null
+ * writeCode = 204: connect socket failed
  *
  * @param appDirPath
  */

@@ -2,6 +2,10 @@ package com.gf.arrow4over6;
 
 import android.content.Intent;
 import android.net.VpnService;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.Arrays;
 
@@ -12,7 +16,19 @@ public enum ArFrontFramework {
         return INSTANCE;
     }
 
-
+    private void showConnectErrorAlert() {
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                new AlertDialog.Builder(MainActivity.getInstance())
+                        .setTitle("连接错误")
+                        .setMessage("连接发生错误，请检查网络状态，IP及端口")
+                        .setPositiveButton("Ok", null)
+                        .show();
+            }
+        });
+    }
 
     public void establishConnect(final String ipv6AddrStr, final int port) {
         new Thread(new Runnable() {
@@ -27,6 +43,11 @@ public enum ArFrontFramework {
 
                 // receive ip info and sockfd
                 int code = PipeFrontEnd.getInstance().readInt();
+                // connect failed
+                if(code == 204) {
+                    showConnectErrorAlert();
+                    return;
+                }
                 if(code != 201) {
                     ArLog.e("read code not equals 201");
                     return;
