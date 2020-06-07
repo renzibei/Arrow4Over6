@@ -122,7 +122,10 @@ void ArBackFramework::readTunnel() {
             if (errno == EAGAIN)
                 continue;
             LOGE("read from vpn tunnel failed, %s", strerror(errno));
-            this->stopFlag = true;
+//            this->stopFlag = true;
+            if(!stopFlag) {
+                stopRun();
+            }
             break;
         }
         tempMsg.length = offsetof(Msg, data) + readLen;
@@ -155,7 +158,10 @@ void ArBackFramework::writeTunnel() {
     while(!stopFlag) {
         if(this->receiveMessage(tempMsg) < 0) {
             LOGE("receive Message from socket failed");
-            this->stopFlag = true;
+            if(!stopFlag) {
+                stopRun();
+            }
+//            this->stopFlag = true;
             break;
         }
         LOGI("receive msg , type = %d", tempMsg.type);

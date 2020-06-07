@@ -96,6 +96,7 @@ public enum ArFrontFramework {
             }
             else if(readCode == 203) {
                 ArLog.i("end front end readLoop");
+                MainActivity.clearStatistics();
                 break;
             }
             else {

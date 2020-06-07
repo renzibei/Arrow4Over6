@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView) mainActivity.findViewById(R.id.downloadPacketsView)).setText("");
                 ((TextView) mainActivity.findViewById(R.id.uploadFlowView)).setText("");
                 ((TextView) mainActivity.findViewById(R.id.downloadFlowView)).setText("");
+//                ((Button) mainActivity.findViewById(R.id.connectButton)).setText("连接");
+//                connectButtonState = 0;
             }
         });
     }
